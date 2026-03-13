@@ -22,13 +22,13 @@
       top: 0;
       z-index: 10;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    header h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
+    header .header-text { flex: 1; }
+    header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em; }
 
     #summary {
       display: flex;
@@ -41,6 +41,70 @@
 
     #summary span b { color: #fff; }
 
+    .btn-settings {
+      background: none;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Settings panel */
+    #settings-panel {
+      display: none;
+      background: #2d2d4e;
+      padding: 16px 20px;
+      border-bottom: 1px solid #444;
+    }
+
+    #settings-panel.open { display: block; }
+
+    #settings-panel label {
+      color: #ccc;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    #settings-panel .key-row { display: flex; gap: 8px; }
+
+    #inp-apikey {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1.5px solid #555;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: monospace;
+    }
+
+    #inp-apikey:focus { outline: none; border-color: #4a90d9; }
+
+    .btn-save-key {
+      padding: 9px 14px;
+      background: #4a90d9;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .key-status {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: #8f8;
+    }
+
+    /* Add form */
     .add-form {
       background: #fff;
       margin: 16px;
@@ -56,6 +120,100 @@
       color: #555;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    /* Camera / barcode row */
+    .capture-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn-capture {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 10px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      background: #fafafa;
+      color: #555;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-capture:hover { border-color: #4a90d9; background: #f0f6ff; color: #4a90d9; }
+    .btn-capture .icon { font-size: 1.2rem; }
+
+    /* Photo preview */
+    #photo-preview-wrap {
+      display: none;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    #photo-preview {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-identify {
+      flex: 1;
+      padding: 10px;
+      background: #6c47ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-identify:hover { background: #5635d9; }
+    .btn-identify:disabled { background: #bbb; cursor: default; }
+
+    .btn-clear-photo {
+      padding: 10px 14px;
+      background: #fdecea;
+      color: #c0392b;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #ai-status {
+      font-size: 0.82rem;
+      color: #6c47ff;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    /* Barcode result banner */
+    #barcode-result {
+      display: none;
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      color: #2e7d32;
+      margin-bottom: 10px;
     }
 
     .fields {
@@ -76,7 +234,7 @@
       letter-spacing: 0.04em;
     }
 
-    input[type="text"], input[type="number"] {
+    input[type="text"], input[type="number"], textarea {
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid #ddd;
@@ -84,9 +242,11 @@
       font-size: 1rem;
       outline: none;
       transition: border-color 0.2s;
+      font-family: inherit;
     }
 
-    input:focus { border-color: #4a90d9; }
+    input:focus, textarea:focus { border-color: #4a90d9; }
+    textarea { resize: vertical; min-height: 60px; }
 
     button.add-btn {
       margin-top: 12px;
@@ -103,7 +263,6 @@
     }
 
     button.add-btn:hover { background: #2d2d4e; }
-    button.add-btn:active { background: #0f0f1e; }
 
     .list-header {
       margin: 0 16px 8px;
@@ -129,16 +288,20 @@
       padding: 14px 16px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
       transition: opacity 0.2s;
     }
 
     .item-card.bought { opacity: 0.55; }
+    .item-card.bought .item-name { text-decoration: line-through; color: #999; }
 
-    .item-card.bought .item-name {
-      text-decoration: line-through;
-      color: #999;
+    .item-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
     }
 
     .item-info { flex: 1; min-width: 0; }
@@ -151,6 +314,16 @@
       text-overflow: ellipsis;
     }
 
+    .item-desc {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 2px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
     .item-meta {
       display: flex;
       gap: 12px;
@@ -160,11 +333,10 @@
       flex-wrap: wrap;
     }
 
-    .item-meta .stand::before { content: '📍 '; }
     .item-meta .price { font-weight: 700; color: #2a7d4f; }
     .item-card.bought .item-meta .price { color: #999; }
 
-    .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .item-actions { display: flex; gap: 6px; flex-shrink: 0; flex-direction: column; }
 
     .btn-icon {
       border: none;
@@ -182,24 +354,85 @@
 
     .btn-del { background: #fdecea; color: #c0392b; }
     .btn-del:hover { background: #f5c6c2; }
+
+    /* Hidden file inputs */
+    #file-camera, #file-barcode { display: none; }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Photo Show 2026</h1>
-  <div id="summary">
-    <span>Interested: <b id="count-interested">0</b> items &mdash; <b id="total-interested">£0.00</b></span>
-    <span>Bought: <b id="count-bought">0</b> items &mdash; <b id="total-bought">£0.00</b></span>
+  <div class="header-text">
+    <h1>Photo Show 2026</h1>
+    <div id="summary">
+      <span>Interested: <b id="count-interested">0</b> items &mdash; <b id="total-interested">£0.00</b></span>
+      <span>Bought: <b id="count-bought">0</b> items &mdash; <b id="total-bought">£0.00</b></span>
+    </div>
   </div>
+  <button class="btn-settings" onclick="toggleSettings()" title="Settings">⚙</button>
 </header>
+
+<div id="settings-panel">
+  <label for="inp-apikey">Anthropic API Key</label>
+  <div class="key-row">
+    <input type="password" id="inp-apikey" placeholder="sk-ant-..." autocomplete="off">
+    <button class="btn-save-key" onclick="saveApiKey()">Save</button>
+  </div>
+  <div class="key-status" id="key-status"></div>
+</div>
 
 <div class="add-form">
   <h2>Add Item</h2>
+
+  <!-- Camera & barcode buttons -->
+  <div class="capture-row">
+    <button class="btn-capture" onclick="document.getElementById('file-camera').click()">
+      <span class="icon">📷</span> Take Photo
+    </button>
+    <button class="btn-capture" onclick="startBarcodeScan()">
+      <span class="icon">🔍</span> Scan Barcode
+    </button>
+  </div>
+
+  <!-- Hidden inputs -->
+  <input type="file" id="file-camera" accept="image/*" capture="environment">
+  <input type="file" id="file-barcode" accept="image/*" capture="environment">
+
+  <!-- Photo preview + AI identify -->
+  <div id="photo-preview-wrap">
+    <img id="photo-preview" alt="Captured photo">
+    <div id="ai-status"></div>
+    <div class="preview-actions">
+      <button class="btn-identify" id="btn-identify" onclick="identifyWithAI()">✨ Identify with AI</button>
+      <button class="btn-clear-photo" onclick="clearPhoto()">✕</button>
+    </div>
+  </div>
+
+  <!-- Barcode result -->
+  <div id="barcode-result"></div>
+
+  <!-- Form fields -->
   <div class="fields">
     <div class="full">
       <label for="inp-name">Item</label>
       <input type="text" id="inp-name" placeholder="e.g. 85mm f/1.8 lens" autocomplete="off">
+    </div>
+    <div class="full">
+      <label for="inp-desc">Notes / Description</label>
+      <textarea id="inp-desc" placeholder="Optional notes about the item…"></textarea>
     </div>
     <div>
       <label for="inp-stand">Stand / Booth</label>
@@ -218,6 +451,11 @@
 
 <script>
   const STORAGE_KEY = 'photoshow_items';
+  const API_KEY_STORAGE = 'photoshow_apikey';
+
+  let currentPhotoDataUrl = null;
+
+  // ── Storage helpers ──────────────────────────────────────────────────────────
 
   function loadItems() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -228,9 +466,257 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 
+  function getApiKey() {
+    return localStorage.getItem(API_KEY_STORAGE) || '';
+  }
+
   function fmt(amount) {
     return '£' + Number(amount).toFixed(2);
   }
+
+  // ── Settings panel ───────────────────────────────────────────────────────────
+
+  function toggleSettings() {
+    const panel = document.getElementById('settings-panel');
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) {
+      const key = getApiKey();
+      document.getElementById('inp-apikey').value = key;
+      document.getElementById('key-status').textContent = key ? '✓ Key saved' : '';
+    }
+  }
+
+  function saveApiKey() {
+    const key = document.getElementById('inp-apikey').value.trim();
+    if (key) {
+      localStorage.setItem(API_KEY_STORAGE, key);
+      document.getElementById('key-status').textContent = '✓ Key saved';
+    } else {
+      localStorage.removeItem(API_KEY_STORAGE);
+      document.getElementById('key-status').textContent = 'Key cleared';
+    }
+  }
+
+  // ── Photo capture ────────────────────────────────────────────────────────────
+
+  document.getElementById('file-camera').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => showPhotoPreview(e.target.result);
+    reader.readAsDataURL(file);
+    this.value = '';
+  });
+
+  function showPhotoPreview(dataUrl) {
+    currentPhotoDataUrl = dataUrl;
+    document.getElementById('photo-preview').src = dataUrl;
+    document.getElementById('photo-preview-wrap').style.display = 'block';
+    document.getElementById('ai-status').textContent = '';
+    document.getElementById('btn-identify').disabled = false;
+    document.getElementById('btn-identify').innerHTML = '✨ Identify with AI';
+  }
+
+  function clearPhoto() {
+    currentPhotoDataUrl = null;
+    document.getElementById('photo-preview-wrap').style.display = 'none';
+    document.getElementById('photo-preview').src = '';
+    document.getElementById('ai-status').textContent = '';
+  }
+
+  // ── Barcode scanning ─────────────────────────────────────────────────────────
+
+  function startBarcodeScan() {
+    if (!('BarcodeDetector' in window)) {
+      // Fallback: capture image and try to detect via canvas
+      document.getElementById('file-barcode').click();
+      return;
+    }
+    document.getElementById('file-barcode').click();
+  }
+
+  document.getElementById('file-barcode').addEventListener('change', async function() {
+    const file = this.files[0];
+    if (!file) return;
+    this.value = '';
+
+    // Show the photo in preview too
+    const dataUrl = await fileToDataUrl(file);
+    showPhotoPreview(dataUrl);
+
+    if (!('BarcodeDetector' in window)) {
+      setAiStatus('Barcode detection not supported in this browser. Use AI identify instead.');
+      return;
+    }
+
+    setAiStatus('Scanning for barcode…');
+    try {
+      const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'] });
+      const img = new Image();
+      img.src = dataUrl;
+      await img.decode();
+      const barcodes = await detector.detect(img);
+
+      if (barcodes.length === 0) {
+        setAiStatus('No barcode found. Try AI identify or enter details manually.');
+        return;
+      }
+
+      const code = barcodes[0].rawValue;
+      setAiStatus(`Barcode found: ${code} — looking up…`);
+      await lookupBarcode(code);
+    } catch (err) {
+      setAiStatus('Barcode scan failed: ' + err.message);
+    }
+  });
+
+  async function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function lookupBarcode(code) {
+    // Try Open Food Facts first (free, no key), then fallback to AI with barcode
+    try {
+      const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${code}.json`);
+      const data = await res.json();
+      if (data.status === 1 && data.product) {
+        const p = data.product;
+        const name = p.product_name || p.product_name_en || '';
+        const brand = p.brands || '';
+        if (name) {
+          document.getElementById('inp-name').value = brand ? `${brand} – ${name}` : name;
+          document.getElementById('inp-desc').value = p.categories || '';
+          showBarcodeResult(`Found: ${name}${brand ? ' by ' + brand : ''}`);
+          setAiStatus('');
+          return;
+        }
+      }
+    } catch {}
+
+    // If not found in food DB, hand off to Claude with the barcode number
+    const key = getApiKey();
+    if (key) {
+      setAiStatus('Not in product database — asking Claude…');
+      await identifyWithAI(`The barcode number is ${code}. Identify this product (likely photography/camera equipment) and return only a JSON object with keys: name, description, estimatedPrice (number in GBP). No markdown, just raw JSON.`);
+    } else {
+      showBarcodeResult(`Barcode: ${code}`);
+      document.getElementById('inp-name').value = code;
+      setAiStatus('Set up your API key to look up unknown barcodes with AI.');
+    }
+  }
+
+  function showBarcodeResult(msg) {
+    const el = document.getElementById('barcode-result');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+  }
+
+  // ── AI identification ────────────────────────────────────────────────────────
+
+  function setAiStatus(msg, spinning = false) {
+    const el = document.getElementById('ai-status');
+    el.innerHTML = spinning ? `<span class="spinner"></span>${msg}` : msg;
+  }
+
+  async function identifyWithAI(customPrompt = null) {
+    const key = getApiKey();
+    if (!key) {
+      setAiStatus('No API key — tap ⚙ to add your Anthropic key.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-identify');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Identifying…';
+    setAiStatus('Sending to Claude…', true);
+
+    try {
+      let messages;
+
+      if (customPrompt) {
+        // Text-only prompt (barcode lookup)
+        messages = [{ role: 'user', content: customPrompt }];
+      } else {
+        if (!currentPhotoDataUrl) {
+          setAiStatus('No photo to identify.');
+          btn.disabled = false;
+          btn.innerHTML = '✨ Identify with AI';
+          return;
+        }
+        // Strip the data URL prefix to get base64
+        const base64 = currentPhotoDataUrl.split(',')[1];
+        const mimeMatch = currentPhotoDataUrl.match(/^data:([^;]+);/);
+        const mediaType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+
+        messages = [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mediaType, data: base64 }
+            },
+            {
+              type: 'text',
+              text: 'This is a photo taken at a photography show or camera fair. Identify the item shown. Return ONLY a raw JSON object (no markdown, no code fences) with these keys: "name" (concise product name), "description" (1-2 sentence description useful for a buyer), "estimatedPrice" (number, estimated GBP price, or 0 if unknown). Example: {"name":"Canon EF 50mm f/1.4 USM","description":"Fast standard prime lens for Canon EF mount cameras.","estimatedPrice":150}'
+            }
+          ]
+        }];
+      }
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 256,
+          messages
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      const text = data.content?.[0]?.text || '';
+
+      // Parse the JSON response
+      let parsed;
+      try {
+        // Handle response that might be wrapped in markdown code fences
+        const jsonText = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+        parsed = JSON.parse(jsonText);
+      } catch {
+        // If parsing fails, just use the text as the name
+        parsed = { name: text.trim(), description: '', estimatedPrice: 0 };
+      }
+
+      if (parsed.name) document.getElementById('inp-name').value = parsed.name;
+      if (parsed.description) document.getElementById('inp-desc').value = parsed.description;
+      if (parsed.estimatedPrice) document.getElementById('inp-price').value = parsed.estimatedPrice;
+
+      setAiStatus('✓ Item identified — check the details below');
+      btn.innerHTML = '✓ Done';
+    } catch (err) {
+      setAiStatus('Error: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = '✨ Identify with AI';
+    }
+  }
+
+  // ── Item list rendering ───────────────────────────────────────────────────────
 
   function renderItems() {
     const items = loadItems();
@@ -243,11 +729,13 @@
     } else {
       header.style.display = 'block';
       list.innerHTML = items.map(item => `
-        <div class="item-card${item.bought ? ' bought' : ''}" id="card-${item.id}">
+        <div class="item-card${item.bought ? ' bought' : ''}">
+          ${item.photo ? `<img class="item-thumb" src="${item.photo}" alt="">` : ''}
           <div class="item-info">
             <div class="item-name">${escHtml(item.name)}</div>
+            ${item.description ? `<div class="item-desc">${escHtml(item.description)}</div>` : ''}
             <div class="item-meta">
-              <span class="stand">${escHtml(item.stand || 'Unknown stand')}</span>
+              <span>📍 ${escHtml(item.stand || 'Unknown stand')}</span>
               <span class="price">${fmt(item.price)}</span>
             </div>
           </div>
@@ -268,7 +756,6 @@
     const interested = items.filter(i => !i.bought);
     const bought = items.filter(i => i.bought);
     const sum = arr => arr.reduce((t, i) => t + Number(i.price), 0);
-
     document.getElementById('count-interested').textContent = interested.length;
     document.getElementById('total-interested').textContent = fmt(sum(interested));
     document.getElementById('count-bought').textContent = bought.length;
@@ -277,23 +764,43 @@
 
   function handleAdd() {
     const name = document.getElementById('inp-name').value.trim();
+    const desc = document.getElementById('inp-desc').value.trim();
     const stand = document.getElementById('inp-stand').value.trim();
     const price = parseFloat(document.getElementById('inp-price').value) || 0;
 
-    if (!name) {
-      document.getElementById('inp-name').focus();
-      return;
-    }
+    if (!name) { document.getElementById('inp-name').focus(); return; }
+
+    // Resize photo to a thumbnail before storing (to keep localStorage manageable)
+    const photoDataUrl = currentPhotoDataUrl ? resizeImage(currentPhotoDataUrl, 120, 120) : null;
 
     const items = loadItems();
-    items.unshift({ id: Date.now(), name, stand, price, bought: false });
+    items.unshift({ id: Date.now(), name, description: desc, stand, price, bought: false, photo: photoDataUrl });
     saveItems(items);
     renderItems();
 
+    // Reset form
     document.getElementById('inp-name').value = '';
+    document.getElementById('inp-desc').value = '';
     document.getElementById('inp-stand').value = '';
     document.getElementById('inp-price').value = '';
+    document.getElementById('barcode-result').style.display = 'none';
+    clearPhoto();
     document.getElementById('inp-name').focus();
+  }
+
+  function resizeImage(dataUrl, maxW, maxH) {
+    try {
+      const canvas = document.createElement('canvas');
+      const img = new Image();
+      img.src = dataUrl;
+      const ratio = Math.min(maxW / img.width, maxH / img.height, 1);
+      canvas.width = Math.round(img.width * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/jpeg', 0.7);
+    } catch {
+      return dataUrl;
+    }
   }
 
   function toggleBought(id) {
@@ -303,8 +810,7 @@
   }
 
   function deleteItem(id) {
-    const items = loadItems().filter(i => i.id !== id);
-    saveItems(items);
+    saveItems(loadItems().filter(i => i.id !== id));
     renderItems();
   }
 
@@ -316,10 +822,16 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Submit form on Enter key in any input
-  document.querySelectorAll('input').forEach(inp => {
+  // Submit on Enter in text inputs
+  document.querySelectorAll('input[type="text"], input[type="number"]').forEach(inp => {
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') handleAdd(); });
   });
+
+  // Init
+  const savedKey = getApiKey();
+  if (savedKey) {
+    document.getElementById('key-status').textContent = '✓ Key saved';
+  }
 
   renderItems();
 </script>
