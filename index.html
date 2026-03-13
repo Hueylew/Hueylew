@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Show 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    #summary {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #ccc;
+      flex-wrap: wrap;
+    }
+
+    #summary span b { color: #fff; }
+
+    .add-form {
+      background: #fff;
+      margin: 16px;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .add-form h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .fields .full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #777;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: #4a90d9; }
+
+    button.add-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px;
+      background: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.add-btn:hover { background: #2d2d4e; }
+    button.add-btn:active { background: #0f0f1e; }
+
+    .list-header {
+      margin: 0 16px 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    #item-list { margin: 0 16px 32px; display: flex; flex-direction: column; gap: 10px; }
+
+    .empty-state {
+      text-align: center;
+      color: #aaa;
+      padding: 40px 20px;
+      font-size: 0.95rem;
+    }
+
+    .item-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: opacity 0.2s;
+    }
+
+    .item-card.bought { opacity: 0.55; }
+
+    .item-card.bought .item-name {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .item-info { flex: 1; min-width: 0; }
+
+    .item-name {
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-meta {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+      font-size: 0.82rem;
+      color: #777;
+      flex-wrap: wrap;
+    }
+
+    .item-meta .stand::before { content: '📍 '; }
+    .item-meta .price { font-weight: 700; color: #2a7d4f; }
+    .item-card.bought .item-meta .price { color: #999; }
+
+    .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .btn-icon {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-buy { background: #e6f4ee; color: #2a7d4f; }
+    .btn-buy:hover { background: #c6e8d6; }
+    .item-card.bought .btn-buy { background: #fff3e0; color: #e07b00; }
+    .item-card.bought .btn-buy:hover { background: #ffe0b2; }
+
+    .btn-del { background: #fdecea; color: #c0392b; }
+    .btn-del:hover { background: #f5c6c2; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Photo Show 2026</h1>
+  <div id="summary">
+    <span>Interested: <b id="count-interested">0</b> items &mdash; <b id="total-interested">£0.00</b></span>
+    <span>Bought: <b id="count-bought">0</b> items &mdash; <b id="total-bought">£0.00</b></span>
+  </div>
+</header>
+
+<div class="add-form">
+  <h2>Add Item</h2>
+  <div class="fields">
+    <div class="full">
+      <label for="inp-name">Item</label>
+      <input type="text" id="inp-name" placeholder="e.g. 85mm f/1.8 lens" autocomplete="off">
+    </div>
+    <div>
+      <label for="inp-stand">Stand / Booth</label>
+      <input type="text" id="inp-stand" placeholder="e.g. A12" autocomplete="off">
+    </div>
+    <div>
+      <label for="inp-price">Price (£)</label>
+      <input type="number" id="inp-price" placeholder="0.00" min="0" step="0.01">
+    </div>
+  </div>
+  <button class="add-btn" onclick="handleAdd()">+ Add to List</button>
+</div>
+
+<div class="list-header" id="list-header" style="display:none">Items</div>
+<div id="item-list"></div>
+
+<script>
+  const STORAGE_KEY = 'photoshow_items';
+
+  function loadItems() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveItems(items) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }
+
+  function fmt(amount) {
+    return '£' + Number(amount).toFixed(2);
+  }
+
+  function renderItems() {
+    const items = loadItems();
+    const list = document.getElementById('item-list');
+    const header = document.getElementById('list-header');
+
+    if (items.length === 0) {
+      header.style.display = 'none';
+      list.innerHTML = '<div class="empty-state">No items yet — add something above!</div>';
+    } else {
+      header.style.display = 'block';
+      list.innerHTML = items.map(item => `
+        <div class="item-card${item.bought ? ' bought' : ''}" id="card-${item.id}">
+          <div class="item-info">
+            <div class="item-name">${escHtml(item.name)}</div>
+            <div class="item-meta">
+              <span class="stand">${escHtml(item.stand || 'Unknown stand')}</span>
+              <span class="price">${fmt(item.price)}</span>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn-icon btn-buy" onclick="toggleBought(${item.id})" title="${item.bought ? 'Mark interested' : 'Mark bought'}">
+              ${item.bought ? '↩' : '✓'}
+            </button>
+            <button class="btn-icon btn-del" onclick="deleteItem(${item.id})" title="Remove">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    updateSummary(items);
+  }
+
+  function updateSummary(items) {
+    const interested = items.filter(i => !i.bought);
+    const bought = items.filter(i => i.bought);
+    const sum = arr => arr.reduce((t, i) => t + Number(i.price), 0);
+
+    document.getElementById('count-interested').textContent = interested.length;
+    document.getElementById('total-interested').textContent = fmt(sum(interested));
+    document.getElementById('count-bought').textContent = bought.length;
+    document.getElementById('total-bought').textContent = fmt(sum(bought));
+  }
+
+  function handleAdd() {
+    const name = document.getElementById('inp-name').value.trim();
+    const stand = document.getElementById('inp-stand').value.trim();
+    const price = parseFloat(document.getElementById('inp-price').value) || 0;
+
+    if (!name) {
+      document.getElementById('inp-name').focus();
+      return;
+    }
+
+    const items = loadItems();
+    items.unshift({ id: Date.now(), name, stand, price, bought: false });
+    saveItems(items);
+    renderItems();
+
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-stand').value = '';
+    document.getElementById('inp-price').value = '';
+    document.getElementById('inp-name').focus();
+  }
+
+  function toggleBought(id) {
+    const items = loadItems();
+    const item = items.find(i => i.id === id);
+    if (item) { item.bought = !item.bought; saveItems(items); renderItems(); }
+  }
+
+  function deleteItem(id) {
+    const items = loadItems().filter(i => i.id !== id);
+    saveItems(items);
+    renderItems();
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Submit form on Enter key in any input
+  document.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') handleAdd(); });
+  });
+
+  renderItems();
+</script>
+</body>
+</html>
