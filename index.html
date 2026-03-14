@@ -686,7 +686,7 @@
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error?.message || `HTTP ${response.status}`);
+        throw new Error(`HTTP ${response.status} – ${err.error?.type || ''}: ${err.error?.message || JSON.stringify(err)}`);
       }
 
       const data = await response.json();
